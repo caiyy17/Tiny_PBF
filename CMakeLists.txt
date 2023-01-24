@@ -4,9 +4,9 @@ project(Tiny_PBF)
 set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
+option(USE_OPENCV "USE_OPENCV" ON)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in"
         "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
-option(USE_OPENCV "USE_OPENCV" ON)
 
 # import OpenMP
 find_package(OpenMP REQUIRED)
