@@ -2,7 +2,7 @@
 
 This project is a c++ version of Position Based Fluids.
 
-Simd optimization by openMP will be used to accelarate the simulation.
+OpenMP Parallization and cuda optimization will be used to accelarate the simulation.
 
 ## Introdution
 
@@ -18,7 +18,7 @@ The algorithm can be divided into 4 parts.
 
 1. Calculate the force (1-4)
 
-Basically, it is just the gravity force. We can use simd to do it in parallel.
+Basically, it is just the gravity force. We can use OpenMP and cuda to do it in parallel.
 
 2. Find the neighbourhood (5-7)
 
