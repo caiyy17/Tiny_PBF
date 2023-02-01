@@ -8,9 +8,9 @@
 
 #include "config.h"
 #ifdef USE_OPENCV
-    #include <opencv2/core/core.hpp>
-    #include <opencv2/highgui/highgui.hpp>
-    #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #endif
 
 #include <omp.h>
@@ -106,8 +106,8 @@ int main() {
     float bounding[4] = {particle_radius_in_world,particle_radius_in_world,
                          boundary[0] - particle_radius_in_world,boundary[1] - particle_radius_in_world};
     const int offset[18] = { -1,-1,   -1, 0,   -1, 1,
-                       0,-1,    0, 0,    0, 1,
-                       1,-1,    1, 0,    1, 1  };
+                             0,-1,    0, 0,    0, 1,
+                             1,-1,    1, 0,    1, 1  };
 
     ///initialization
     float *x,*y,*old_x,*old_y,*vx,*vy,*lambdas,*position_deltas_x,*position_deltas_y;
@@ -133,6 +133,7 @@ int main() {
 
 
     int time_step = 0;
+    int occupy  = 0;
     auto start = std::chrono::system_clock::now();
     while(time_step < 100) {
         time_step++;
@@ -170,8 +171,12 @@ int main() {
 //#pragma omp atomic
             grid_count[index] += 1; //atomic add
         }
+        occupy = 0;
         for(int i = 1; i < grid_size[0]*grid_size[1]; i++) {
             ///establish the range list (example: 2,4,6,8,...,1200)
+            if(grid_count[i] > 0){
+                occupy += 1;
+            }
             grid_count[i] += grid_count[i - 1];
         }
 //#pragma omp parallel for schedule(dynamic)
@@ -321,6 +326,7 @@ int main() {
     auto end = std::chrono::system_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
     std::cout<<"time = "<<double(duration.count())<<"ms"<<std::endl;
+    printf("%f\n", num_particles/float(occupy));
 
 
     return 0;
